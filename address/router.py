@@ -44,3 +44,9 @@ async def delete_address_by_id(address_id: int,
                                 database: Session = Depends(db.get_db),
                                 current_user: Account = Depends(get_current_user)):
     return await services.delete_address_by_id(address_id, current_user.id, database)
+
+
+@router.patch('/{address_id}', status_code=status.HTTP_200_OK, response_model=schema.AddressBase)
+async def update_address_by_id(request: schema.AddressUpdate, address_id: int, database: Session = Depends(db.get_db),
+                                current_user: Account = Depends(get_current_user)):                            
+    return await services.update_address_by_id(request, address_id, current_user.id, database)
