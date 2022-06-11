@@ -16,6 +16,14 @@ The purpose of this repository is to get my hands dirty with FastAPI skills. It 
       C-->D;
 ```
 
+```mermaid
+erDiagram
+    CUSTOMER ||--o{ ORDER : places
+    ORDER ||--|{ LINE-ITEM : contains
+    CUSTOMER }|..|{ DELIVERY-ADDRESS : uses
+```
+
+
 ## Resources
 
 Following resources were used for motivation in designing this template
