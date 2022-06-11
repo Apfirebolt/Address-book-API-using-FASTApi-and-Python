@@ -31,3 +31,8 @@ async def get_user_by_id(user_id, database) -> Optional[models.Account]:
 
     return user_info
 
+
+async def get_profile(database, current_user) -> models.Account:
+    user = database.query(models.Account).filter(models.Account.email == current_user.email).first()
+    return user
+

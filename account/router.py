@@ -7,7 +7,7 @@ from . import schema
 from . import services
 from . import validator
 
-from . jwt import create_access_token
+from . jwt import create_access_token, get_current_user
 
 import db
 from . import hashing
@@ -52,6 +52,11 @@ def login(request: OAuth2PasswordRequestForm = Depends(),
 @router.get('/', response_model=List[schema.DisplayAccount])
 async def get_all_users(database: Session = Depends(db.get_db)):
     return await services.all_users(database)
+
+
+@router.get('/profile', response_model=schema.DisplayAccount)
+async def get_profile(database: Session = Depends(db.get_db), current_user: schema.Account = Depends(get_current_user)):
+    return await services.get_profile(database, current_user)
 
 
 @router.get('/{user_id}', response_model=schema.DisplayAccount)

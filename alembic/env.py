@@ -7,6 +7,7 @@ from alembic import context
 from db import Base
 
 from account.models import Account
+from address.models import Address
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

@@ -4,6 +4,7 @@ from starlette.staticfiles import StaticFiles
 
 from task import router as task_router
 from account import router as account_router
+from address import router as address_router
 from theme import router as theme_router
 
 app = FastAPI(title="Address Book App",
@@ -19,6 +20,7 @@ async def root():
 app.include_router(task_router.router)
 app.include_router(account_router.router)
 app.include_router(theme_router.router)
+app.include_router(address_router.router)
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
