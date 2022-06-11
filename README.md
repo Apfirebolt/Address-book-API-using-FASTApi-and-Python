@@ -23,6 +23,20 @@ erDiagram
     CUSTOMER }|..|{ DELIVERY-ADDRESS : uses
 ```
 
+```
+erDiagram
+    CAR {
+        string registrationNumber
+        string make
+        string model
+    }
+    PERSON {
+        string firstName
+        string lastName
+        int age
+    }
+```
+
 
 ## Resources
 
