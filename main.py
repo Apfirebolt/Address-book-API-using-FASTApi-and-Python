@@ -14,7 +14,7 @@ app = FastAPI(title="Address Book App",
 
 @app.get("/")
 async def root():
-    return {"message": "Hello Address Book API Jackson"}
+    return {"message": "Hello Address Book API"}
 
 
 app.include_router(task_router.router)
