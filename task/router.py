@@ -27,8 +27,8 @@ async def get_all_tasks(database: Session = Depends(db.get_db)):
     return await services.get_all_tasks(database)
 
 
-@router.get('/{task_id}', status_code=status.HTTP_200_OK, response_class=Response)
-async def get_task_by_id(task_id: int,database: Session = Depends(db.get_db)):
+@router.get('/{task_id}', status_code=status.HTTP_200_OK, response_model=schema.TaskBase)
+async def get_task_by_id(task_id: int, database: Session = Depends(db.get_db)):
     return await services.get_task_by_id(task_id, database)
 
 
@@ -38,6 +38,6 @@ async def delete_task_by_id(task_id: int,
     return await services.delete_task_by_id(task_id, database)
 
 
-@router.patch('/{task_id}', status_code=status.HTTP_200_OK, response_class=Response)
-async def update_task_by_id(task_id: int, request: schema.TaskBase, database: Session = Depends(db.get_db)):
+@router.patch('/{task_id}', status_code=status.HTTP_200_OK, response_model=schema.TaskBase)
+async def update_task_by_id(task_id: int, request: schema.TaskUpdate, database: Session = Depends(db.get_db)):
     return await services.update_task_by_id(task_id, request, database)

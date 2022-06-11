@@ -17,7 +17,7 @@ async def get_all_tasks(database) -> List[models.Task]:
 
 
 async def get_task_by_id(task_id, database):
-    task = database.query(models.Task).get(task_id)
+    task = database.query(models.Task).filter_by(id=task_id).first()
     if not task:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -42,6 +42,8 @@ async def update_task_by_id(task_id, request, database):
     task.name = request.name if request.name else task.name
     task.description = request.description if request.description else task.description
     database.commit()
+    database.refresh(task)
+    return task
 
 
 

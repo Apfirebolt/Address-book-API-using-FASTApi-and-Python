@@ -9,3 +9,10 @@ class TaskBase(BaseModel):
 
     class Config:
         orm_mode = True
+
+class TaskUpdate(BaseModel):
+    name: Optional[str]
+    description: Optional[str]
+
+    class Config:
+        orm_mode = True
