@@ -28,7 +28,21 @@ async def get_task_by_id(task_id, database):
 
 async def delete_task_by_id(task_id, database):
     database.query(models.Task).filter(
-        models.task.id == task_id).delete()
+        models.Task.id == task_id).delete()
     database.commit()
+
+
+async def update_task_by_id(task_id, request, database):
+    task = database.query(models.Task).get(task_id)
+    if not task:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Task Not Found !"
+        )
+    task.name = request.name if request.name else task.name
+    task.description = request.description if request.description else task.description
+    database.commit()
+
+
 
 
