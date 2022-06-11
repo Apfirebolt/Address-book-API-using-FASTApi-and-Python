@@ -34,11 +34,13 @@ async def address_list(database: Session = Depends(db.get_db),
 
 
 @router.get('/{address_id}', status_code=status.HTTP_200_OK, response_model=schema.AddressBase)
-async def get_address_by_id(address_id: int, database: Session = Depends(db.get_db)):
-    return await services.get_address_by_id(address_id, database)
+async def get_address_by_id(address_id: int, database: Session = Depends(db.get_db),
+                                current_user: Account = Depends(get_current_user)):                            
+    return await services.get_address_by_id(address_id, current_user.id, database)
 
 
 @router.delete('/{address_id}', status_code=status.HTTP_204_NO_CONTENT, response_class=Response)
 async def delete_address_by_id(address_id: int,
-                                database: Session = Depends(db.get_db)):
-    return await services.delete_address_by_id(address_id, database)
+                                database: Session = Depends(db.get_db),
+                                current_user: Account = Depends(get_current_user)):
+    return await services.delete_address_by_id(address_id, current_user.id, database)

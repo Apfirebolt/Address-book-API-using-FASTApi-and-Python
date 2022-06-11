@@ -16,8 +16,8 @@ async def get_address_listing(database) -> List[models.Address]:
     return addresses
 
 
-async def get_address_by_id(address_id, database):
-    address = database.query(models.Address).filter_by(id=address_id).first()
+async def get_address_by_id(address_id, user_id, database):
+    address = database.query(models.Address).filter_by(id=address_id, user_id=user_id).first()
     if not address:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -26,20 +26,12 @@ async def get_address_by_id(address_id, database):
     return address
 
 
-async def delete_address_by_id(address_id, database):
+async def delete_address_by_id(address_id, user_id, database):
     database.query(models.Address).filter(
-        models.Address.id == address_id).delete()
+        models.Address.id == address_id and models.Address.user_id == user_id).delete()
     database.commit()
 
 
-async def update_address_by_id(address_id, request, database):
-    address = database.query(models.Address).get(address_id)
-    if not address:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="address Not Found !"
-        )
-    return address
 
 
 
