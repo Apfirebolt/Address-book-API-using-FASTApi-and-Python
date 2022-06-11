@@ -12,21 +12,21 @@ FastAPI is a modern back-end framework written in Python which can be used as an
 
 ### Reasons you might want to use Fast API:
 
-Fast: Very high performance, on par with NodeJS and Go (thanks to Starlette and Pydantic). One of the fastest Python frameworks available.
+* Fast: Very high performance, on par with NodeJS and Go (thanks to Starlette and Pydantic). One of the fastest Python frameworks available.
 
-Fast to code: Increase the speed to develop features by about 200% to 300%.
+* Fast to code: Increase the speed to develop features by about 200% to 300%.
 
-Fewer bugs: Reduce about 40% of human (developer) induced errors.
+* Fewer bugs: Reduce about 40% of human (developer) induced errors.
 
-Intuitive: Great editor support. Completion everywhere. Less time debugging.
+* Intuitive: Great editor support. Completion everywhere. Less time debugging.
 
-Easy: Designed to be easy to use and learn. Less time reading docs.
+* Easy: Designed to be easy to use and learn. Less time reading docs.
 
-Short: Minimize code duplication. Multiple features from each parameter declaration. Fewer bugs.
+* Short: Minimize code duplication. Multiple features from each parameter declaration. Fewer bugs.
 
-Robust: Get production-ready code. With automatic interactive documentation.
+* Robust: Get production-ready code. With automatic interactive documentation.
 
-Standards-based: Based on (and fully compatible with) the open standards for APIs: OpenAPI (previously known as Swagger) and JSON Schema.
+* Standards-based: Based on (and fully compatible with) the open standards for APIs: OpenAPI (previously known as Swagger) and JSON Schema.
 
 ## Models
 
@@ -51,6 +51,33 @@ erDiagram
         string shipping_address
         string created_at
     }
+```
+
+## Database
+
+Postgres is used for the database and Alembic package is used for migrations which means accomodating real time changes in the database. The code sample below demonstates the integration of SQLAlchemy and Postgres in a FastAPI project.
+
+```
+from sqlalchemy import create_engine, MetaData
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
+
+SQLALCHEMY_DATABASE_URL = f"postgresql://postgres:pass12345@127.0.0.1/address-book"
+
+engine = create_engine(SQLALCHEMY_DATABASE_URL)
+
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+Base = declarative_base()
+metadata = MetaData()
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
 ```
 
 
