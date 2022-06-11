@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, status, Response, HTTPException
+from fastapi import APIRouter, Depends, status, Response, HTTPException, UploadFile
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from typing import List
@@ -14,6 +14,16 @@ from . import hashing
 from . models import Account
 
 router = APIRouter(tags=['Accounts'], prefix='/account')
+
+@router.post("/image")
+async def create_upload_file(file: UploadFile):
+    if not file:
+        return {"message": "No upload file sent"}
+    else:
+        file_location = f"media/{file.filename}"
+        with open(file_location, "wb+") as file_object:
+            file_object.write(file.file.read())
+        return {"info": f"file '{file.filename}' saved at '{file_location}'"}
 
 
 @router.post('/', status_code=status.HTTP_201_CREATED)
