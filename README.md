@@ -12,21 +12,21 @@ FastAPI is a modern back-end framework written in Python which can be used as an
 
 ### Reasons you might want to use Fast API:
 
-* Fast: Very high performance, on par with NodeJS and Go (thanks to Starlette and Pydantic). One of the fastest Python frameworks available.
+* **Fast**: Very high performance, on par with NodeJS and Go (thanks to Starlette and Pydantic). One of the fastest Python frameworks available.
 
-* Fast to code: Increase the speed to develop features by about 200% to 300%.
+* **Fast to code**: Increase the speed to develop features by about 200% to 300%.
 
-* Fewer bugs: Reduce about 40% of human (developer) induced errors.
+* **Fewer bugs**: Reduce about 40% of human (developer) induced errors.
 
-* Intuitive: Great editor support. Completion everywhere. Less time debugging.
+* **Intuitive**: Great editor support. Completion everywhere. Less time debugging.
 
-* Easy: Designed to be easy to use and learn. Less time reading docs.
+* **Easy to learn (compared to Django and even Flask)**: Designed to be easy to use and learn. Less time reading docs.
 
-* Short: Minimize code duplication. Multiple features from each parameter declaration. Fewer bugs.
+* **Short**: Minimize code duplication. Multiple features from each parameter declaration. Fewer bugs.
 
-* Robust: Get production-ready code. With automatic interactive documentation.
+* **Robust**: Get production-ready code. With automatic interactive documentation.
 
-* Standards-based: Based on (and fully compatible with) the open standards for APIs: OpenAPI (previously known as Swagger) and JSON Schema.
+* **Standards-based**: Based on (and fully compatible with) the open standards for APIs: OpenAPI (previously known as Swagger) and JSON Schema.
 
 ## Models
 
@@ -80,10 +80,88 @@ def get_db():
 
 ```
 
+## Testing with Pytest
+
+A separate database is used exclusively for testing, configuration has been put inside a config.py file in the root folder of the project.
+
+```
+DATABASE_USERNAME = 'postgres'
+DATABASE_PASSWORD = 'pass12345'
+DATABASE_HOST = '127.0.0.1'
+DATABASE_NAME = 'address-book'
+
+TEST_DATABASE_NAME = 'address-book-test'
+```
+
+Code to test the app root end-point. We need to make sure 200 status code is returned when we hit this route.
+
+```
+from fastapi.testclient import TestClient
+
+from main import app
+
+client = TestClient(app)
+
+
+def test_read_main():
+    response = client.get("/")
+    assert response.status_code == 200
+    assert response.json() == {"message": "Hello Address Book API"}
+```
+
+test_db.py 
+
+```
+from fastapi.testclient import TestClient
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+
+import config
+from db import Base, get_db
+from main import app
+
+
+DATABASE_USERNAME = config.DATABASE_USERNAME
+DATABASE_PASSWORD = config.DATABASE_PASSWORD
+DATABASE_HOST = config.DATABASE_HOST
+DATABASE_NAME = config.TEST_DATABASE_NAME
+
+SQLALCHEMY_DATABASE_URL = f"postgresql://{DATABASE_USERNAME}:{DATABASE_PASSWORD}@{DATABASE_HOST}/{DATABASE_NAME}"
+
+engine = create_engine(SQLALCHEMY_DATABASE_URL)
+
+TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+Base.metadata.create_all(bind=engine)
+
+def override_get_db():
+    try:
+        db = TestingSessionLocal()
+        yield db
+    finally:
+        db.close()
+
+
+app.dependency_overrides[get_db] = override_get_db
+
+client = TestClient(app)
+
+
+def test_create_user():
+    response = client.post(
+        "/account/",
+        json={"username": "Deadpool", "email": "deadpool@example.com", "password": "chimichangas4life"},
+    )
+    assert response.status_code == 201
+    data = response.json()
+    assert data["email"] == "deadpool@example.com"
+```
+
+
 
 ## Resources
 
-Following resources were used for motivation in designing this template
+Following resources were used for motivation in designing this API.
 
 - [Fast API Official Website](https://fastapi.tiangolo.com/)
 - [Udemy Course - FastAPI](https://www.udemy.com/course/fastapi-the-complete-course/)
