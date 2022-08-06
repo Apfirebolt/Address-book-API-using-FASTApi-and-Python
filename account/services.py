@@ -6,8 +6,11 @@ from . import models
 
 
 async def new_user_register(request: schema.Account, database) -> models.Account:
+    print('data print ', request)
     new_user = models.Account(username=request.username, email=request.email,
-                           password=request.password)
+                           password=request.password,
+                           firstName=request.firstName,
+                           lastName=request.lastName)
 
     database.add(new_user)
     database.commit()

@@ -13,6 +13,8 @@ class DisplayAccount(BaseModel):
     id: int
     username: str
     email: str
+    firstName: Optional[str]
+    lastName: Optional[str]
 
     class Config:
         orm_mode = True

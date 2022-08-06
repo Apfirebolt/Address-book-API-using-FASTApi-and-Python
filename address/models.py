@@ -1,6 +1,5 @@
 from datetime import datetime
 from sqlalchemy import Column, Float, ForeignKey, Text, DateTime, Integer
-from sqlalchemy.orm import relationship
 from account.models import Account
 
 
@@ -14,4 +13,5 @@ class Address(Base):
     created_date = Column(DateTime, default=datetime.now)
     shipping_address = Column(Text)
     user_id = Column(Integer, ForeignKey(Account.id, ondelete="CASCADE"))
+
 

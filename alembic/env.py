@@ -8,6 +8,7 @@ from db import Base
 
 from account.models import Account
 from address.models import Address
+from task.models import Task
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -32,7 +33,7 @@ def get_url():
     db_user = 'postgres'
     db_password = 'pass12345'
     db_host ='127.0.0.1'
-    db_name = 'address-book'
+    db_name = 'university'
     return f"postgresql://{db_user}:{db_password}@{db_host}/{db_name}"
 
 def run_migrations_offline():

@@ -26,7 +26,7 @@ async def create_new_address(request: schema.AddressBase, database: Session = De
 
 
 @router.get('/', status_code=status.HTTP_200_OK,
-            response_model=List[schema.AddressBase])
+            response_model=List[schema.AddressList])
 async def address_list(database: Session = Depends(db.get_db),
                       current_user: Account = Depends(get_current_user)):
     result = await services.get_address_listing(database)

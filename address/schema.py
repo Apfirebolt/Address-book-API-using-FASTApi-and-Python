@@ -16,3 +16,10 @@ class AddressUpdate(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class AddressList(BaseModel):
+    shipping_address: Optional[str]
+
+    class Config:
+        orm_mode = True

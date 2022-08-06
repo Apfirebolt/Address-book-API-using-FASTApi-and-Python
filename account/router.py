@@ -43,8 +43,8 @@ async def create_user_registration(request: schema.Account,
 
 
 @router.post('/login')
-def login(request: OAuth2PasswordRequestForm = Depends(),
-          database: Session = Depends(db.get_db)):
+def login(request: schema.Login,
+          database: Session = Depends(db.get_db)):    
     user = database.query(Account).filter(Account.email == request.username).first()
     if not user:
         raise HTTPException(
