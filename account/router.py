@@ -26,6 +26,18 @@ async def create_upload_file(file: UploadFile):
         return {"info": f"file '{file.filename}' saved at '{file_location}'"}
 
 
+@router.post("/photos")
+async def create_multiple_file_upload(files: List[UploadFile]):
+    if not len(files):
+        return {"message": "No upload file sent"}
+    else:
+        for one_file in files:
+            file_location = f"media/{one_file.filename}"
+            with open(file_location, "wb+") as file_object:
+                file_object.write(one_file.file.read())
+        return {"info": "Multiple files saved"}
+
+
 @router.post('/', status_code=status.HTTP_201_CREATED)
 async def create_user_registration(request: schema.Account,
                                    database: Session = Depends(db.get_db)):
