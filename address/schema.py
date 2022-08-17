@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 from pydantic import BaseModel, constr
 
 
@@ -17,6 +17,9 @@ class AddressUpdate(BaseModel):
     class Config:
         orm_mode = True
 
+class MultipleAddress(BaseModel):
+
+    data: List[AddressBase]
 
 class AddressList(BaseModel):
     shipping_address: Optional[str]

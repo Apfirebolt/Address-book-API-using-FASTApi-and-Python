@@ -22,6 +22,15 @@ async def create_task(request: schema.TaskBase,
     return task
 
 
+@router.post('/bulk', status_code=status.HTTP_201_CREATED)
+async def create_task_bulk(request: schema.TaskList,
+                         database: Session = Depends(db.get_db)):
+    
+    tasks = await services.create_bulk_task_upload(request.data, database)
+
+    return tasks
+
+
 @router.get('/', response_model=List[schema.TaskBase])
 async def get_all_tasks(database: Session = Depends(db.get_db)):
     return await services.get_all_tasks(database)

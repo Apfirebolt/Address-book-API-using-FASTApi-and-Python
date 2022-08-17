@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 from pydantic import BaseModel, constr
 
 
@@ -16,3 +16,7 @@ class TaskUpdate(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class TaskList(BaseModel):
+    data: List[TaskBase]

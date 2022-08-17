@@ -25,6 +25,14 @@ async def create_new_address(request: schema.AddressBase, database: Session = De
     return result
 
 
+@router.post('/multi', status_code=status.HTTP_201_CREATED)
+async def create_multiple_addresses(data, database: Session = Depends(db.get_db)):
+    # user = database.query(Account).filter(Account.email == current_user.email).first()
+    # result = await services.add_bulk_address(request.addresses, database, user)
+    print(data)
+    return 'jumbo doc'
+
+
 @router.get('/', status_code=status.HTTP_200_OK,
             response_model=List[schema.AddressList])
 async def address_list(database: Session = Depends(db.get_db),

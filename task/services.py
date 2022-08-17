@@ -11,6 +11,21 @@ async def create_new_task(request, database) -> models.Task:
     return new_task
 
 
+async def create_bulk_task_upload(tasks, database) -> models.Task:
+
+    objects = []
+    
+    for task in tasks:
+        db_item = models.Task(name=task.name, description=task.description)
+        objects.append(db_item)
+    database.bulk_save_objects(objects)
+    database.commit()
+    return {
+        "data": objects,
+        'message': 'Bulk upload completed'
+    }
+
+
 async def get_all_tasks(database) -> List[models.Task]:
     tasks = database.query(models.Task).all()
     return tasks
